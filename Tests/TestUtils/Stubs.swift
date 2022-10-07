@@ -327,8 +327,9 @@ class MockRustBackend: ZcashRustBackendWelding {
         }
     }
     
-    static func rewindToHeight(dbData: URL, height: Int32, networkType: NetworkType) -> Bool {
-        mockDataDb ? true : rustBackend.rewindToHeight(dbData: dbData, height: height, networkType: networkType)
+    static func rewindToHeight(dbData: URL, height: Int32?, networkType: NetworkType) throws {
+        guard !mockDataDb else { return }
+        try rustBackend.rewindToHeight(dbData: dbData, height: height, networkType: networkType)
     }
     
     static func scanBlocks(dbCache: URL, dbData: URL, limit: UInt32, networkType: NetworkType) -> Bool {

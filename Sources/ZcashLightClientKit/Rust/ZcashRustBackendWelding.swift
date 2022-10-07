@@ -401,9 +401,9 @@ protocol ZcashRustBackendWelding {
     ///   - networkType: the network type
     static func rewindToHeight(
         dbData: URL,
-        height: Int32,
+        height: Int32?,
         networkType: NetworkType
-    ) -> Bool
+    ) throws
     
 
     /// Scans new blocks added to the cache for any transactions received by the tracked

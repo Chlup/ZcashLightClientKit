@@ -572,8 +572,10 @@ public class CompactBlockProcessor {
 
         // FIXME: this should be done on the rust layer
         let rewindHeight = max(Int32(nearestHeight - 1), Int32(config.walletBirthday))
-        guard rustBackend.rewindToHeight(dbData: config.dataDb, height: rewindHeight, networkType: self.config.network.networkType) else {
-            let error = rustBackend.lastError() ?? RustWeldingError.genericError(message: "unknown error rewinding to height \(height)")
+
+        do {
+            try rustBackend.rewindToHeight(dbData: config.dataDb, height: rewindHeight, networkType: self.config.network.networkType)
+        } catch let error {
             fail(error)
             throw error
         }
@@ -818,11 +820,13 @@ public class CompactBlockProcessor {
             walletBirthday: self.config.walletBirthday
         )
 
-        guard rustBackend.rewindToHeight(dbData: config.dataDb, height: Int32(rewindHeight), networkType: self.config.network.networkType) else {
-            fail(rustBackend.lastError() ?? RustWeldingError.genericError(message: "unknown error rewinding to height \(height)"))
+        do {
+            try rustBackend.rewindToHeight(dbData: config.dataDb, height: Int32(rewindHeight), networkType: self.config.network.networkType)
+        } catch let error {
+            fail(error)
             return
         }
-        
+
         do {
             try downloader.rewind(to: rewindHeight)
             

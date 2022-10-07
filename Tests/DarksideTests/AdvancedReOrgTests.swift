@@ -439,6 +439,7 @@ class AdvancedReOrgTests: XCTestCase {
         try coordinator.reset(saplingActivation: birthday, branchID: "2bb40e60", chainName: "main")
         try coordinator.resetBlocks(dataset: .predefined(dataset: .txIndexChangeBefore))
         try coordinator.applyStaged(blockheight: 663195)
+
         sleep(1)
         let firstSyncExpectation = XCTestExpectation(description: "first sync expectation")
         

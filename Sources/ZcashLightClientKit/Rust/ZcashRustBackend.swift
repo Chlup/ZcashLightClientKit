@@ -571,9 +571,24 @@ class ZcashRustBackend: ZcashRustBackendWelding {
         return zcashlc_validate_combined_chain(dbCache.0, dbCache.1, dbData.0, dbData.1, networkType.networkId)
     }
     
-    static func rewindToHeight(dbData: URL, height: Int32, networkType: NetworkType) -> Bool {
+    static func rewindToHeight(dbData: URL, height: Int32?, networkType: NetworkType) throws {
+        let nearestRewind = getNearestRewindHeight(dbData: dbData, height: 0, networkType: networkType)
         let dbData = dbData.osStr()
-        return zcashlc_rewind_to_height(dbData.0, dbData.1, height, networkType.networkId)
+
+        let heightToRewind: Int32
+        if let height {
+            guard height < nearestRewind else {
+                throw RustWeldingError.invalidRewind(suggestedHeight: nearestRewind)
+            }
+
+            heightToRewind = height
+        } else {
+            heightToRewind = nearestRewind
+        }
+
+        if !zcashlc_rewind_to_height(dbData.0, dbData.1, heightToRewind, networkType.networkId) {
+            throw lastError() ?? RustWeldingError.genericError(message: "unknown error rewinding to height \(heightToRewind)")
+        }
     }
     
     static func scanBlocks(dbCache: URL, dbData: URL, limit: UInt32 = 0, networkType: NetworkType) -> Bool {
