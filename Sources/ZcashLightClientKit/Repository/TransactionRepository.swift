@@ -15,6 +15,7 @@ protocol TransactionRepository {
     func find(rawID: Data) async throws -> ZcashTransaction.Overview
     func find(offset: Int, limit: Int, kind: TransactionKind) async throws -> [ZcashTransaction.Overview]
     func find(in range: CompactBlockRange, limit: Int, kind: TransactionKind) async throws -> [ZcashTransaction.Overview]
+    func find(from height: BlockHeight, limit: Int, kind: TransactionKind) async throws -> [ZcashTransaction.Overview]
     func find(from: ZcashTransaction.Overview, limit: Int, kind: TransactionKind) async throws -> [ZcashTransaction.Overview]
     func findPendingTransactions(latestHeight: BlockHeight, offset: Int, limit: Int) async throws -> [ZcashTransaction.Overview]
     func findReceived(offset: Int, limit: Int) async throws -> [ZcashTransaction.Overview]

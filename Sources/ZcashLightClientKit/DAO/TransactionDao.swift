@@ -101,6 +101,16 @@ class TransactionSQLDAO: TransactionRepository {
         return try execute(query) { try ZcashTransaction.Overview(row: $0) }
     }
 
+    func find(from height: BlockHeight, limit: Int, kind: TransactionKind) async throws -> [ZcashTransaction.Overview] {
+        let query = transactionsView
+            .order((ZcashTransaction.Overview.Column.minedHeight ?? BlockHeight.max).desc)
+            .filter(height >= ZcashTransaction.Overview.Column.minedHeight)
+            .filterQueryFor(kind: kind)
+            .limit(limit)
+
+        return try execute(query) { try ZcashTransaction.Overview(row: $0) }
+    }
+
     func find(from transaction: ZcashTransaction.Overview, limit: Int, kind: TransactionKind) async throws -> [ZcashTransaction.Overview] {
         guard
             let transactionBlockHeight = transaction.minedHeight

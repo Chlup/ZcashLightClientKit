@@ -195,7 +195,10 @@ public protocol Synchronizer: AnyObject {
 
     /// all transactions related to receiving funds
     var receivedTransactions: [ZcashTransaction.Overview] { get async }
-    
+
+    /// Get transactions from specific block height. Transactions with mined height >= `height` are returned.
+    func getTransaction(from height: BlockHeight) async throws -> [ZcashTransaction.Overview]
+
     /// A repository serving transactions in a paginated manner
     /// - Parameter kind: Transaction Kind expected from this PaginatedTransactionRepository
     func paginatedTransactions(of kind: TransactionKind) -> PaginatedTransactionRepository

@@ -93,6 +93,12 @@ extension ClosureSDKSynchronizer: ClosureSynchronizer {
         }
     }
 
+    public func getTransaction(from height: BlockHeight, completion: @escaping (Result<[ZcashTransaction.Overview], Error>) -> Void) {
+        AsyncToClosureGateway.executeThrowingAction(completion) {
+            try await self.synchronizer.getTransaction(from: height)
+        }
+    }
+
     public func clearedTransactions(completion: @escaping ([ZcashTransaction.Overview]) -> Void) {
         AsyncToClosureGateway.executeAction(completion) {
             await self.synchronizer.transactions

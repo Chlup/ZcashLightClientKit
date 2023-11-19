@@ -591,6 +591,11 @@ extension SDKSynchronizer {
         }
     }
 
+    /// Get transactions from specific block height. Provided `height` is included in selection.
+    public func getTransaction(from height: BlockHeight) async throws -> [ZcashTransaction.Overview] {
+        return try await transactionRepository.find(from: height, limit: Int.max, kind: .all)
+    }
+
     public var sentTransactions: [ZcashTransaction.Overview] {
         get async {
             (try? await allSentTransactions()) ?? []

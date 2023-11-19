@@ -107,7 +107,13 @@ extension CombineSDKSynchronizer: CombineSynchronizer {
             await self.synchronizer.receivedTransactions
         }
     }
-    
+
+    public func getTransaction(from height: BlockHeight) -> SinglePublisher<[ZcashTransaction.Overview], Error> {
+        AsyncToCombineGateway.executeThrowingAction() {
+            try await self.synchronizer.getTransaction(from: height)
+        }
+    }
+
     public func paginatedTransactions(of kind: TransactionKind) -> PaginatedTransactionRepository { synchronizer.paginatedTransactions(of: kind) }
 
     public func getMemos(for transaction: ZcashTransaction.Overview) -> SinglePublisher<[Memo], Error> {

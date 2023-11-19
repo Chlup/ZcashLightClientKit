@@ -52,6 +52,8 @@ public protocol CombineSynchronizer {
     var sentTransactions: SinglePublisher<[ZcashTransaction.Overview], Never> { get }
     var receivedTransactions: SinglePublisher<[ZcashTransaction.Overview], Never> { get }
 
+    func getTransaction(from height: BlockHeight) -> SinglePublisher<[ZcashTransaction.Overview], Error>
+
     func paginatedTransactions(of kind: TransactionKind) -> PaginatedTransactionRepository
 
     func getMemos(for transaction: ZcashTransaction.Overview) -> SinglePublisher<[Memo], Error>
