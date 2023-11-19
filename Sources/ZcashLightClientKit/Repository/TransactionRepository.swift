@@ -21,6 +21,7 @@ protocol TransactionRepository {
     func findReceived(offset: Int, limit: Int) async throws -> [ZcashTransaction.Overview]
     func findSent(offset: Int, limit: Int) async throws -> [ZcashTransaction.Overview]
     func findMemos(for transaction: ZcashTransaction.Overview) async throws -> [Memo]
+    func findMemos(for transactionRawID: Data) async throws -> [Memo]
     func getRecipients(for rawID: Data) async throws -> [TransactionRecipient]
     func getTransactionOutputs(for rawID: Data) async throws -> [ZcashTransaction.Output]
 }

@@ -377,6 +377,10 @@ public class SDKSynchronizer: Synchronizer {
         return try await transactionRepository.findMemos(for: transaction)
     }
 
+    public func getMemos(for transactionRawID: Data) async throws -> [Memo] {
+        return try await transactionRepository.findMemos(for: transactionRawID)
+    }
+
     public func getRecipients(for transaction: ZcashTransaction.Overview) async -> [TransactionRecipient] {
         return (try? await transactionRepository.getRecipients(for: transaction.rawID)) ?? []
     }

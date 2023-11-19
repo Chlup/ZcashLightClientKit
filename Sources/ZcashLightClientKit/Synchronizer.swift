@@ -208,6 +208,11 @@ public protocol Synchronizer: AnyObject {
     // sourcery: mockedName="getMemosForClearedTransaction"
     func getMemos(for transaction: ZcashTransaction.Overview) async throws -> [Memo]
 
+    /// Get all memos for transaction raw ID.
+    ///
+    // sourcery: mockedName="getMemosForTransactionRawID"
+    func getMemos(for transactionRawID: Data) async throws -> [Memo]
+
     /// Attempt to get recipients from a Transaction Overview.
     /// - parameter transaction: A transaction overview
     /// - returns the recipients or an empty array if no recipients are found on this transaction because it's not an outgoing

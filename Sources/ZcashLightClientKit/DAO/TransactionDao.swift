@@ -160,8 +160,13 @@ class TransactionSQLDAO: TransactionRepository {
     }
 
     func findMemos(for transaction: ZcashTransaction.Overview) async throws -> [Memo] {
+        return try await findMemos(for: transaction.rawID)
+
+    }
+
+    func findMemos(for transactionRawID: Data) async throws -> [Memo] {
         do {
-            return try await getTransactionOutputs(for: transaction.rawID)
+            return try await getTransactionOutputs(for: transactionRawID)
                 .compactMap { $0.memo }
         } catch {
             throw ZcashError.transactionRepositoryFindMemos(error)
