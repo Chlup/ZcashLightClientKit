@@ -19,7 +19,7 @@ public protocol Logger {
     func sync(_ message: String, file: StaticString, function: StaticString, line: Int)
 }
 
-extension Logger {
+public extension Logger {
     func debug(_ message: String, file: StaticString = #file, function: StaticString = #function, line: Int = #line) {
         debug(message, file: file, function: function, line: line)
     }
