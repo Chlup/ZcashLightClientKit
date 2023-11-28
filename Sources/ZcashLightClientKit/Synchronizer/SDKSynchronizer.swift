@@ -361,6 +361,10 @@ public class SDKSynchronizer: Synchronizer {
         return try await transactionRepository.find(offset: 0, limit: Int.max, kind: .all)
     }
 
+    public func getTransaction(for rawID: Data) async throws -> ZcashTransaction.Overview {
+        return try await transactionRepository.find(rawID: rawID)
+    }
+
     public func allSentTransactions() async throws -> [ZcashTransaction.Overview] {
         return try await transactionRepository.findSent(offset: 0, limit: Int.max)
     }

@@ -235,6 +235,8 @@ public protocol Synchronizer: AnyObject {
     /// - Returns: an array with the given Transactions or an empty array
     func allTransactions(from transaction: ZcashTransaction.Overview, limit: Int) async throws -> [ZcashTransaction.Overview]
 
+    func getTransaction(for rawID: Data) async throws -> ZcashTransaction.Overview
+
     /// Returns the latest block height from the provided Lightwallet endpoint
     func latestHeight() async throws -> BlockHeight
 
