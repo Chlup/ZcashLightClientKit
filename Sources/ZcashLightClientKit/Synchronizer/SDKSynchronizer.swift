@@ -365,6 +365,10 @@ public class SDKSynchronizer: Synchronizer {
         return try await transactionRepository.find(rawID: rawID)
     }
 
+    public func getTransactions(from height: BlockHeight) async throws -> AsyncThrowingStream<ZcashTransaction.Overview, Error> {
+        return try await transactionRepository.find(from: height)
+    }
+
     public func allSentTransactions() async throws -> [ZcashTransaction.Overview] {
         return try await transactionRepository.findSent(offset: 0, limit: Int.max)
     }
