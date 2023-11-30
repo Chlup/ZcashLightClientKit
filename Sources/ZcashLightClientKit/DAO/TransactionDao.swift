@@ -111,10 +111,16 @@ class TransactionSQLDAO: TransactionRepository {
         return try execute(query) { try ZcashTransaction.Overview(row: $0) }
     }
 
-    func find(from height: BlockHeight) async throws -> AsyncThrowingStream<ZcashTransaction.Overview, Error> {
+    func find(from fromHeight: BlockHeight, to toHeigth: BlockHeight) async throws -> AsyncThrowingStream<ZcashTransaction.Overview, Error> {
         let query = transactionsView
             .order((ZcashTransaction.Overview.Column.minedHeight ?? BlockHeight.max).asc)
-            .filter(ZcashTransaction.Overview.Column.minedHeight >= height || ZcashTransaction.Overview.Column.minedHeight == nil)
+            .filter(
+                (
+                    ZcashTransaction.Overview.Column.minedHeight >= fromHeight &&
+                    ZcashTransaction.Overview.Column.minedHeight <= toHeigth
+                ) ||
+                ZcashTransaction.Overview.Column.minedHeight == nil
+            )
 
         let db = try connection()
         let iterator = try db.prepareRowIterator(query)

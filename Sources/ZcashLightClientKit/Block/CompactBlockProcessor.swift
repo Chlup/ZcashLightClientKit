@@ -23,6 +23,9 @@ actor CompactBlockProcessor {
 
     private let actions: [CBPState: Action]
     var context: ActionContext
+    var lastEnhancedHeight: BlockHeight? {
+        get async { await context.lastEnhancedHeight }
+    }
 
     private(set) var config: Configuration
     private let configProvider: ConfigProvider
